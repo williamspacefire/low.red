@@ -1,0 +1,27 @@
+{
+  "name": "low.red",
+  "version": "1.0.0",
+  "description": "URL Shortener",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williamspacefire/low.red.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/williamspacefire/low.red/issues"
+  },
+  "homepage": "https://github.com/williamspacefire/low.red#readme",
+  "dependencies": {
+    "material-ui": "^0.20.2",
+    "mysql": "^2.18.1",
+    "next": "^10.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
