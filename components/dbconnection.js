@@ -1,15 +1,10 @@
 let mysql = require("mysql")
 let dbcred = require("../config.json")
 
-global.result = {
-    error: false,
-    message: ""
-}
-
 exports.db = () => {
     const connection = mysql.createConnection(dbcred)
 
-    connection.connect((error) => {
+    /*connection.connect((error) => {
         if (error?.stack) {
             
             console.log(error.stack)
@@ -20,10 +15,7 @@ exports.db = () => {
             console.log("Database connected")
             global.result.message = "Database connected"
         }
-    })
+    })*/
 
-    return {
-        results: global.result,
-        //db: connection
-    }
+    return connection
 }
