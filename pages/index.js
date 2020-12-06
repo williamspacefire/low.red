@@ -3,14 +3,22 @@ import { Search } from "@material-ui/icons";
 import Image from 'next/image';
 import Header from '../components/header.js';
 
+let hostname = ""
 
+if (typeof window != "undefined") {
+    if (window.location.port != 80 && window.location.port != 443){
+        hostname = window.location.hostname+":"+window.location.port;
+    } else {
+        hostname = window.location.hostname;
+    }
+}
 
 export default function index() {
     return (
         <>
             <Header title="LOW.RED - Simple Url Shortener"/>
             <Container>
-            <br/><br/><br/><br/><br/><br/>
+            <br/><br/><br/><br/>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Grid container justify="left" spacing={4}>
@@ -34,7 +42,7 @@ export default function index() {
                     <InputBase 
                         name="short"
                         style={{padding:"4px",flex:1,}} 
-                        placeholder="Short a url"/>
+                        placeholder="Shorten your link"/>
                         <IconButton>
                             <Search/>
                         </IconButton>
@@ -50,7 +58,7 @@ export default function index() {
                         </Grid>
                         
                         <Grid container justify="flex-end" alignItems="baseline" spacing={3}>
-                            <Grid item><Typography variant="body1">https://low.red/O9od</Typography></Grid>
+                            <Grid item><Typography variant="body1">{hostname}/O9od</Typography></Grid>
                             <Grid item><Button color="primary">Copy</Button></Grid>
                         </Grid>
                     </Grid>
