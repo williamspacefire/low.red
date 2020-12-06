@@ -7,9 +7,9 @@ let hostname = ""
 
 if (typeof window != "undefined") {
     if (window.location.port != ""){
-        hostname = window.location.hostname+":"+window.location.port;
+        hostname = window.location.protocol+"//"+window.location.hostname+":"+window.location.port;
     } else {
-        hostname = window.location.hostname;
+        hostname = window.location.protocol+"//"+window.location.hostname;
     }
 }
 
