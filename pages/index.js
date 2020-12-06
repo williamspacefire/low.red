@@ -28,6 +28,8 @@ export default function index() {
                         </Grid>
                     </Grid>
                 </Grid>
+                
+                {/*Shortener bar*/}
                 <Paper component="form" style={{padding:"5px",marginTop:"10px",display:"flex"}}>
                     <InputBase 
                         name="short"
@@ -37,12 +39,21 @@ export default function index() {
                             <Search/>
                         </IconButton>
                 </Paper>
+                 
+                 {/*List of shortened urls*/}
                 <Paper style={{padding:"20px", display:"flex",marginTop:10}} elevation={2}>
-                    <Typography style={{flex:1}} variant="body1">https://blog.meycup.com/asdpasd0afasf-asfasf-asfas-fasf</Typography>
-                    <Typography variant="body1">https://low.red/O9od</Typography>
-                    <Button color="primary">
-                        Copy
-                    </Button>
+                    <Grid container>                    
+                        <Grid item justify="flex-start">
+                            <Typography style={{flex:1}} variant="body1">
+                                https://blog.meycup.com/asdpasd0afasf-asfasf-asfas-fasf
+                            </Typography>
+                        </Grid>
+                        
+                        <Grid container justify="flex-end" alignItems="baseline" spacing={3}>
+                            <Grid item><Typography variant="body1">https://low.red/O9od</Typography></Grid>
+                            <Grid item><Button color="primary">Copy</Button></Grid>
+                        </Grid>
+                    </Grid>
                 </Paper>
             </Container>
         </>
