@@ -3,7 +3,7 @@ import { Search } from "@material-ui/icons";
 import Image from 'next/image';
 import Header from '../components/header.js';
 
-let hostname = ""
+let hostname = "";
 
 if (typeof window != "undefined") {
     if (window.location.port != ""){

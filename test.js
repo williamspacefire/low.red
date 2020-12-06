@@ -1,5 +1,4 @@
-const { db } = require("./components/dbconnection")
+const dotenv = require('dotenv');
+dotenv.config();
 
-const c = db()
-
-console.log(c)
+console.log(process.env.DB_HOST);
