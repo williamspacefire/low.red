@@ -6,7 +6,7 @@ import Header from '../components/header.js';
 let hostname = ""
 
 if (typeof window != "undefined") {
-    if (window.location.port != 80 && window.location.port != 443){
+    if (window.location.port != ""){
         hostname = window.location.hostname+":"+window.location.port;
     } else {
         hostname = window.location.hostname;
