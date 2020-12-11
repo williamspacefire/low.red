@@ -2,8 +2,10 @@ import { Button, Container, Grid, IconButton, InputBase, Paper, Typography } fro
 import { Search } from "@material-ui/icons";
 import Image from 'next/image';
 import Header from '../components/header.js';
+import { useRouter } from 'next/router';
 
 let hostname = "";
+let url = "";
 
 if (typeof window != "undefined") {
     if (window.location.port != ""){
@@ -11,6 +13,24 @@ if (typeof window != "undefined") {
     } else {
         hostname = window.location.protocol+"//"+window.location.hostname;
     }
+}
+
+function shortUrl(e) {
+    console.log("Form submit")
+    e?.preventDefault();
+    
+
+    let newUrl = url;
+    
+    while(newUrl.includes("/")) newUrl = newUrl.replace("/", "%2f")
+
+    fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => console.log(json))
+
+}
+
+function urlChange(e) {
+    console.log("url changed");
+    url = e?.target.value
 }
 
 export default function index() {
@@ -38,8 +58,9 @@ export default function index() {
                 </Grid>
                 
                 {/*Shortener bar*/}
-                <Paper component="form" style={{padding:"5px",marginTop:"10px",display:"flex"}}>
-                    <InputBase 
+                <Paper action="/short" onSubmit={shortUrl} component="form" style={{padding:"5px",marginTop:"10px",display:"flex"}}>
+                    <InputBase
+                        onChange={urlChange} 
                         name="short"
                         style={{padding:"4px",flex:1,}} 
                         placeholder="Shorten your link"/>
