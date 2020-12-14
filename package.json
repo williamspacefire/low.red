@@ -24,12 +24,13 @@
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "base-64": "^1.0.0",
     "dotenv": "^8.2.0",
-    "js-sha256": "^0.9.0",
     "mysql": "^2.18.1",
     "next": "^10.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "swr": "^0.3.9",
     "urlencode": "^1.1.0"
   }
 }

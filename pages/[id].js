@@ -1,12 +1,17 @@
-function short({url}) {
+import { hosturl } from '../components/env';
+
+function short({data}) {
 
     if (typeof window != "undefined") {
-        window.location.href = url;
+        while(true) {
+            if (typeof data != "undefined") window.location.href = data.url;
+            break;
+        }
     }
 
     return (
         <>
-            Redirecting...
+            Redirecting...If you don't get redirected <a href={data?.url}>Click here</a>
         </>
     )
 }
@@ -16,33 +21,24 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-
-    var url;
-    const { host, user, database, password } =  require("../components/env");
-    const mysql = require('mysql');
-    const db = mysql.createConnection({
-        host: host,
-        user: user,
-        password: password,
-        database: database
-    });
-
-    function callback(error, results, fields) {
-        //db.release();
-
-        if (error) throw error;
-
-        url = results[0].url;
-        console.log(results[0].url);
-    }
     
-    db.query(`SELECT * FROM urls WHERE short = '${params.id}' LIMIT 1`, (error, results, fields) => {
-        callback(error, results, fields);
-    })
+    const api = await fetch(`${hosturl}/api/v1/short/id/${params.id}`);
+    const data = await api.json();
 
-    console.log("final: "+url);
-
-    return { props: { url: url } }
+    if (data.error && data.code == 404) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            },
+        }
+    } else {
+        return { 
+            props: { 
+                data,
+            } 
+        }
+    }
 
 }
 

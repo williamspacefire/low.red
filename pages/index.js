@@ -1,11 +1,29 @@
-import { Button, Container, Grid, IconButton, InputBase, Paper, Typography } from "@material-ui/core";
+import { Button, Container, Grid, IconButton, InputBase, Link, Paper, Typography } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import Image from 'next/image';
+import useSWR, { mutate } from "swr";
 import Header from '../components/header.js';
+import Short from "../components/short.js";
 
+const fetcher = url => fetch(url).then(r => r.json());
 const urlencode = require("urlencode");
 let hostname = "";
 let url = "";
+let shortData;
+
+function Copyright() {
+    return (
+      <Typography style={{padding: "30px"}} variant="body2" color="textSecondary" align="center">
+        {'Copyright © '}
+        <Link color="inherit" href="https://meycup.com">
+          MeyCup
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
+
 
 if (typeof window != "undefined") {
     if (window.location.port != ""){
@@ -21,7 +39,7 @@ function shortUrl(e) {
     
     let newUrl = urlencode(url);
 
-    fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => console.log(json))
+    fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => mutate("/api/v1/short/", {...shortData, url: json.url, short: json.short}, false))
 
 }
 
@@ -31,6 +49,10 @@ function urlChange(e) {
 }
 
 export default function index() {
+
+    //const {data,error} = useSWR("/api/v1/short/"+urlencode(url), fetcher);
+    //shortData = data;
+
     return (
         <>
             <Header title="LOW.RED - Simple Url Shortener"/>
@@ -53,34 +75,9 @@ export default function index() {
                         </Grid>
                     </Grid>
                 </Grid>
-                
-                {/*Shortener bar*/}
-                <Paper action="/short" onSubmit={shortUrl} component="form" style={{padding:"5px",marginTop:"10px",display:"flex"}}>
-                    <InputBase
-                        onChange={urlChange} 
-                        name="short"
-                        style={{padding:"4px",flex:1,}} 
-                        placeholder="Shorten your link"/>
-                        <IconButton>
-                            <Search/>
-                        </IconButton>
-                </Paper>
-                 
-                 {/*List of shortened urls*/}
-                <Paper style={{padding:"20px", display:"flex",marginTop:10}} elevation={2}>
-                    <Grid container>                    
-                        <Grid item justify="flex-start">
-                            <Typography style={{flex:1}} variant="body1">
-                                https://blog.meycup.com/asdpasd0afasf-asfasf-asfas-fasf
-                            </Typography>
-                        </Grid>
-                        
-                        <Grid container justify="flex-end" alignItems="baseline" spacing={3}>
-                            <Grid item><Typography variant="body1">{hostname}/O9od</Typography></Grid>
-                            <Grid item><Button color="primary">Copy</Button></Grid>
-                        </Grid>
-                    </Grid>
-                </Paper>
+                {/* Short Component */} 
+                <Short hostname={hostname}/>
+                <Copyright/>
             </Container>
         </>
     )
