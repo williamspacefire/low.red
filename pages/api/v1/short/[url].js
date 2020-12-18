@@ -1,4 +1,3 @@
-//const {db} = require("../../../../components/dbconnection");
 import { host, user, database, password, hosturl } from '../../../../components/env';
 
 const mysql = require('mysql');

@@ -36,7 +36,7 @@ export default class Short extends React.Component {
         return (
             <>
                 {/*Shortener bar*/}
-                <Paper action="/short" onSubmit={(e) => this.shortUrl(e)} component="form" style={{padding:"5px",marginTop:"10px",display:"flex"}}>
+                <Paper onSubmit={(e) => this.shortUrl(e)} component="form" style={{padding:"5px",marginTop:"10px",display:"flex"}}>
                     <InputBase
                         onChange={(e) => this.urlChange(e)} 
                         name="short"
@@ -46,6 +46,7 @@ export default class Short extends React.Component {
                             <Search/>
                         </IconButton>
                 </Paper>
+
                 {/*List of shortened urls*/}
                 <Paper style={{padding:"20px", display:"flex",marginTop:10}} elevation={2}>
                     <Grid container>                    

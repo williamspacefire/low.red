@@ -1,15 +1,9 @@
-import { Button, Container, Grid, IconButton, InputBase, Link, Paper, Typography } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
+import { Container, Grid, Link, Typography } from "@material-ui/core";
 import Image from 'next/image';
-import useSWR, { mutate } from "swr";
 import Header from '../components/header.js';
 import Short from "../components/short.js";
 
-const fetcher = url => fetch(url).then(r => r.json());
-const urlencode = require("urlencode");
 let hostname = "";
-let url = "";
-let shortData;
 
 function Copyright() {
     return (
@@ -33,25 +27,7 @@ if (typeof window != "undefined") {
     }
 }
 
-function shortUrl(e) {
-    console.log("Form submit")
-    e?.preventDefault();
-    
-    let newUrl = urlencode(url);
-
-    fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => mutate("/api/v1/short/", {...shortData, url: json.url, short: json.short}, false))
-
-}
-
-function urlChange(e) {
-    console.log("url changed");
-    url = e?.target.value
-}
-
 export default function index() {
-
-    //const {data,error} = useSWR("/api/v1/short/"+urlencode(url), fetcher);
-    //shortData = data;
 
     return (
         <>
