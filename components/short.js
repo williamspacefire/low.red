@@ -1,6 +1,8 @@
 import { Button, Grid, IconButton, InputBase, Paper, Typography } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
+import { Skeleton } from '@material-ui/lab';
 import React from 'react';
+
 const urlencode = require("urlencode");
 
 export default class Short extends React.Component {
@@ -10,18 +12,19 @@ export default class Short extends React.Component {
 
         this.state = {
             url: "",
-            shortData: {}
+            shortData: {},
+            loading: false
         }
     }
 
     shortUrl(e) {
+        this.setState({loading: true, shortData: {}})
         console.log("Form submit")
         e?.preventDefault();
         
         let newUrl = urlencode(this.state.url);
     
-        fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => this.setState({shortData: json}));
-    
+        fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => this.setState({shortData: json, loading: false}));
     }
 
     urlChange(e) {
@@ -48,20 +51,40 @@ export default class Short extends React.Component {
                 </Paper>
 
                 {/*List of shortened urls*/}
-                <Paper style={{padding:"20px", display:"flex",marginTop:10}} elevation={2}>
-                    <Grid container>                    
-                        <Grid item justify="flex-start">
-                            <Typography style={{flex:1}} variant="body1">
-                                {this.state.shortData?.url}
-                            </Typography>
-                        </Grid>
-                        
-                        <Grid container justify="flex-end" alignItems="baseline" spacing={3}>
-                            <Grid item><Typography variant="body1">{this.props.hostname}/{this.state.shortData?.short}</Typography></Grid>
-                            <Grid item><Button color="primary">Copy</Button></Grid>
-                        </Grid>
-                    </Grid>
-                </Paper>
+                {this.state.loading || this.state.shortData?.short ? (
+                    <>
+                        <Paper style={{padding:"20px", display:"flex",marginTop:10}} elevation={2}>
+                            <Grid container>                    
+                                <Grid item justify="flex-start">
+                                    <Typography style={{flex:1}} variant="body1">
+                                        {this.state.shortData?.url ? (
+                                            this.state.shortData?.url
+                                        ) : (
+                                            <Skeleton width={300}/>
+                                        )}
+                                    </Typography>
+                                </Grid>
+                                
+                                <Grid container justify="flex-end" alignItems="baseline" spacing={3}>
+                                    <Grid item>
+                                        <Typography variant="body1">
+                                            {this.state.shortData?.short ? (
+                                                this.props.hostname+this.state.shortData?.short
+                                            ) : (
+                                                <Skeleton width={150}/>
+                                            )}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        {this.state.shortData?.short ? (
+                                            <Button color="primary">Copy</Button>
+                                        ) : ("")}
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                    </>
+                ) : ("") }
             </>
         )
     }
