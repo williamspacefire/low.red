@@ -1,9 +1,10 @@
 import { Button, Grid, IconButton, InputBase, Paper, Typography } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
-import { Skeleton } from '@material-ui/lab';
+import { Alert, Skeleton } from '@material-ui/lab';
 import React from 'react';
 
 const urlencode = require("urlencode");
+const validUrl = require('url-validation');
 
 export default class Short extends React.Component {
     
@@ -18,13 +19,21 @@ export default class Short extends React.Component {
     }
 
     shortUrl(e) {
-        this.setState({loading: true, shortData: {}})
+        this.setState({loading: false, shortData: {}})
         console.log("Form submit")
         e?.preventDefault();
         
-        let newUrl = urlencode(this.state.url);
+        if (validUrl(this.state.url)) {
+            this.setState({loading: true})
+            let newUrl = urlencode(this.state.url);
     
-        fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => this.setState({shortData: json, loading: false}));
+            fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => this.setState({shortData: json, loading: false}));
+        } else {
+            this.setState({shortData: {
+                error: true,
+                message: "Invalid url, please try again with a valid url."
+            }})
+        }
     }
 
     urlChange(e) {
@@ -35,9 +44,11 @@ export default class Short extends React.Component {
     }
     
     render() {
-
         return (
             <>
+                {this.state.shortData.error ? (
+                    <Alert severity="error">{this.state.shortData.message}</Alert>
+                ) : ("")}
                 {/*Shortener bar*/}
                 <Paper onSubmit={(e) => this.shortUrl(e)} component="form" style={{padding:"5px",marginTop:"10px",display:"flex"}}>
                     <InputBase
