@@ -11,7 +11,7 @@ function short({data}) {
 
     return (
         <>
-            Redirecting...If you don't get redirected <a href={data?.url}>Click here</a>
+            Redirecting...<a href={data?.url}>Click here</a>
         </>
     )
 }

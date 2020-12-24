@@ -20,7 +20,7 @@ export default function handler(req, res) {
         
         if (error) throw error;
         
-        if (results[0]) {
+        if (results[0] && results[0]?.short === id) {
             res.end(JSON.stringify(results[0]))
         } else {
             res.end(JSON.stringify({
