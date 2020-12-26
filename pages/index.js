@@ -9,8 +9,8 @@ function Copyright() {
     return (
       <Typography style={{padding: "30px"}} variant="body2" color="textSecondary" align="center">
         {'Copyright © '}
-        <Link color="inherit" href="https://meycup.com">
-          MeyCup
+        <Link color="inherit" href="https://spacefire.xyz">
+          Spacefire
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}
@@ -38,11 +38,11 @@ export default function index() {
                     <Grid item xs={12}>
                         <Grid container justify="left" spacing={4}>
                             <Grid key="1" item>
-                                <Typography variant="h2">
-                                    Short links, big results
+                                <Typography variant="h3">
+                                    Short links for you and your brand
                                 </Typography><br/>
                                 <Typography variant="subtitle1">
-                                    A URL shortener built with powerful tools to help you grow and protect your brand.
+                                    A URL shortener built Open Source to help you grow and protect your brand.
                                 </Typography>
                             </Grid>
                             <Grid key="2" item>
