@@ -1,26 +1,18 @@
 import { hosturl } from '../components/env';
+import Head from 'next/head';
 
 function short({data}) {
-
-    if (typeof window != "undefined") {
-        while(true) {
-            if (typeof data != "undefined") window.location.href = data.url;
-            break;
-        }
-    }
-
     return (
         <>
+            <Head>
+                <meta httpEquiv="refresh" content={"0; url="+data?.url}/>
+            </Head>
             Redirecting...<a href={data?.url}>Click here</a>
         </>
     )
 }
 
-export async function getStaticPaths() {
-    return {paths: [], fallback: true}
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
     
     const api = await fetch(`${hosturl}/api/v1/short/id/${params.id}`);
     const data = await api.json();
