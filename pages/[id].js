@@ -26,9 +26,10 @@ export async function getServerSideProps({ params }) {
         }
     } else {
         return { 
-            props: { 
-                data,
-            } 
+            redirect: {
+                destination: data.url,
+                permanent: true
+            }
         }
     }
 
