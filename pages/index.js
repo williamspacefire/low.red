@@ -19,7 +19,7 @@ function Copyright() {
   }
 
 
-if (typeof window != "undefined") {
+if (process.browser) {
     if (window.location.port != ""){
         hostname = window.location.protocol+"//"+window.location.hostname+":"+window.location.port+"/";
     } else {
