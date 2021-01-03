@@ -6,6 +6,7 @@ function short({ data }) {
         <>
             <Head>
                 <meta httpEquiv="refresh" content={"0; url="+data?.url}/>
+                <title>Redirecting...</title>
             </Head>
             Redirecting...<a href={data?.url}>Click here</a>
         </>
@@ -16,12 +17,12 @@ export async function getServerSideProps({ params }) {
     
     const api = await fetch(`${hosturl}/api/v1/short/id/${params.id}`);
     const data = await api.json();
-    const url = data.error && data.code == 404 ? "/" : data.url;
+    const url = data.error && data.code === 404 ? "/" : data.url;
 
     return { 
         redirect: {
             destination: url,
-            permanent: url == "/" ? false : true
+            permanent: url !== "/"
         },
         props: {
             data,

@@ -38,9 +38,7 @@ export default class Short extends React.Component {
     }
 
     urlChange(e) {
-        this.setState(state => ({
-            url: e?.target.value
-        }))
+        this.setState({url: e?.target.value})
     }
 
     copy(e) {
@@ -60,7 +58,6 @@ export default class Short extends React.Component {
     }
     
     render() {
-
         const open = Boolean(this.state.anchorEl);
         const popoverId = open ? 'simple-popover' : undefined;
 
