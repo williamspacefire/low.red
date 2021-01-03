@@ -1,32 +1,22 @@
-import { Container, Grid, Link, Typography } from "@material-ui/core";
+import { Container, Grid, Typography } from "@material-ui/core";
 import Image from 'next/image';
 import Header from '../components/header.js';
 import Short from "../components/short.js";
+import Copyright from '../components/copyright';
 
-let hostname = "";
-
-function Copyright() {
-    return (
-      <Typography style={{padding: "30px"}} variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
-        <Link color="inherit" href="https://spacefire.xyz">
-          Spacefire
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
-
-if (process.browser) {
-    if (window.location.port !== ""){
-        hostname = window.location.protocol+"//"+window.location.hostname+":"+window.location.port+"/";
-    } else {
-        hostname = window.location.protocol+"//"+window.location.hostname+"/";
+function getHostname() {
+    if (process.browser) {
+        if (window.location.port !== ""){
+            return window.location.protocol+"//"+window.location.hostname+":"+window.location.port+"/";
+        } else {
+            return window.location.protocol+"//"+window.location.hostname+"/";
+        }
     }
 }
 
 export default function index() {
+
+    const hostname = getHostname()
 
     return (
         <>

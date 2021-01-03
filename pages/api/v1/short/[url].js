@@ -15,12 +15,13 @@ const db = mysql.createConnection({
 export default function handler(req, res) {
 
     const { query: {url}, } = req;
-    let newUrl = urlencode.decode(url);
+    const newUrl = urlencode.decode(url);
+    const isLowRed = newUrl.startsWith("https://low.red") || newUrl.startsWith("http://low.red")
 
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
     
-    if (validUrl(newUrl)) {
+    if (validUrl(newUrl) && !isLowRed) {
         db.query(`SELECT * FROM urls WHERE url = '${url}' LIMIT 1`, (error, results, fields) => {
             if (results.length > 0) {
                 res.end(JSON.stringify({
@@ -52,6 +53,12 @@ export default function handler(req, res) {
                 })
             }
         })
+    } else if (isLowRed) {
+        res.end(JSON.stringify({
+            error: true,
+            message: "This is already a low.red shortened url.",
+            code: 346
+        }))
     } else {
         res.end(JSON.stringify({
             error: true,

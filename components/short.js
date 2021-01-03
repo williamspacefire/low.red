@@ -20,19 +20,32 @@ export default class Short extends React.Component {
     }
 
     shortUrl(e) {
-        this.setState({loading: false, shortData: {}})
-        console.log("Form submit")
         e?.preventDefault();
+
+        this.setState({loading: false, shortData: {}})
+        const isLowRed = this.state.url.startsWith("https://low.red") || this.state.url.startsWith("http://low.red")
         
-        if (validUrl(this.state.url)) {
+        if (validUrl(this.state.url) && !isLowRed) {
             this.setState({loading: true})
-            let newUrl = urlencode(this.state.url);
+            const newUrl = urlencode(this.state.url);
     
-            fetch("/api/v1/short/"+newUrl).then(res => res.json()).then(json => this.setState({shortData: json, loading: false}));
+            fetch("/api/v1/short/"+newUrl)
+                .then(res => res.json())
+                .then(json => this.setState({
+                    shortData: json,
+                    loading: false
+                }));
+        } else if (isLowRed) {
+            this.setState({shortData: {
+                error: true,
+                message: "This is already a low.red shortened url.",
+                code: 346
+            }})
         } else {
             this.setState({shortData: {
                 error: true,
-                message: "Invalid url, please try again with a valid url."
+                message: "Invalid url, please try again with a valid url.",
+                code: 345
             }})
         }
     }
@@ -64,7 +77,7 @@ export default class Short extends React.Component {
         return (
             <>
                 {this.state.shortData.error ? (
-                    <Alert severity="error">{this.state.shortData.message}</Alert>
+                    <Alert severity="error">{this.state.shortData.message} <b>Code: {this.state.shortData.code}</b></Alert>
                 ) : ("")}
                 {/*Shortener bar*/}
                 <Paper onSubmit={(e) => this.shortUrl(e)} component="form" style={{padding:"5px",marginTop:"10px",display:"flex"}}>
