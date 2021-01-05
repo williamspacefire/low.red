@@ -5,6 +5,7 @@ import React from 'react';
 
 const urlencode = require("urlencode");
 const validUrl = require('url-validation');
+const parse = require("url-parse")
 
 export default class Short extends React.Component {
     
@@ -19,13 +20,24 @@ export default class Short extends React.Component {
         }
     }
 
+    notAllowedHosts = [
+        'low.red',
+        'bit.ly',
+        'goo.gl',
+        'g.co',
+        't.co',
+        'a.co',
+        this.props.hostname
+    ]
+
     shortUrl(e) {
         e?.preventDefault();
 
+        const urlParsed = parse(this.state.url, true)
+
         this.setState({loading: false, shortData: {}})
-        const isLowRed = this.state.url.startsWith("https://low.red") || this.state.url.startsWith("http://low.red")
         
-        if (validUrl(this.state.url) && !isLowRed) {
+        if (validUrl(this.state.url) && !this.notAllowedHosts.includes(urlParsed.host)) {
             this.setState({loading: true})
             const newUrl = urlencode(this.state.url);
     
@@ -35,10 +47,10 @@ export default class Short extends React.Component {
                     shortData: json,
                     loading: false
                 }));
-        } else if (isLowRed) {
+        } else if (this.notAllowedHosts.includes(urlParsed.host)) {
             this.setState({shortData: {
                 error: true,
-                message: "This is already a low.red shortened url.",
+                message: <>This is already a <b>{urlParsed.host}</b> shortened url.</>,
                 code: 346
             }})
         } else {

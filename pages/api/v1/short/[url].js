@@ -4,6 +4,7 @@ const mysql = require('mysql');
 const base64 = require("base-64");
 const urlencode = require("urlencode");
 const validUrl = require("url-validation");
+const parse = require('url-parse')
 
 const db = mysql.createConnection({
     host: host,
@@ -16,12 +17,20 @@ export default function handler(req, res) {
 
     const { query: {url}, } = req;
     const newUrl = urlencode.decode(url);
-    const isLowRed = newUrl.startsWith("https://low.red") || newUrl.startsWith("http://low.red")
+    const notAllowedHosts = [
+        'low.red',
+        'bit.ly',
+        'goo.gl',
+        'g.co',
+        't.co',
+        'a.co'
+    ]
+    const urlParsed = parse(newUrl, true)
 
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
     
-    if (validUrl(newUrl) && !isLowRed) {
+    if (validUrl(newUrl) && !notAllowedHosts.includes(urlParsed.host)) {
         db.query(`SELECT * FROM urls WHERE url = '${url}' LIMIT 1`, (error, results, fields) => {
             if (results.length > 0) {
                 res.end(JSON.stringify({
@@ -53,10 +62,10 @@ export default function handler(req, res) {
                 })
             }
         })
-    } else if (isLowRed) {
+    } else if (notAllowedHosts.includes(urlParsed.host)) {
         res.end(JSON.stringify({
             error: true,
-            message: "This is already a low.red shortened url.",
+            message: `This is already a ${urlParsed.host} shortened url.`,
             code: 346
         }))
     } else {
