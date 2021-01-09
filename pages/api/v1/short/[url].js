@@ -4,7 +4,8 @@ const mysql = require('mysql');
 const base64 = require("base-64");
 const urlencode = require("urlencode");
 const validUrl = require("url-validation");
-const parse = require('url-parse')
+const parse = require('url-parse');
+const shortenerProviders = require('../../../../components/shortenerproviders');
 
 const db = mysql.createConnection({
     host: host,
@@ -17,20 +18,12 @@ export default function handler(req, res) {
 
     const { query: {url}, } = req;
     const newUrl = urlencode.decode(url);
-    const notAllowedHosts = [
-        'low.red',
-        'bit.ly',
-        'goo.gl',
-        'g.co',
-        't.co',
-        'a.co'
-    ]
     const urlParsed = parse(newUrl, true)
 
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
     
-    if (validUrl(newUrl) && !notAllowedHosts.includes(urlParsed.host)) {
+    if (validUrl(newUrl) && !shortenerProviders.includes(urlParsed.host)) {
         db.query(`SELECT * FROM urls WHERE url = '${url}' LIMIT 1`, (error, results, fields) => {
             if (results.length > 0) {
                 res.end(JSON.stringify({
@@ -53,7 +46,6 @@ export default function handler(req, res) {
                         if (error) throw error;
             
                         console.log(results.insertId);
-                        fetch(`${hosturl}/${short}`);
                         res.end(JSON.stringify({
                             url: newUrl,
                             short: short
@@ -62,7 +54,7 @@ export default function handler(req, res) {
                 })
             }
         })
-    } else if (notAllowedHosts.includes(urlParsed.host)) {
+    } else if (shortenerProviders.includes(urlParsed.host)) {
         res.end(JSON.stringify({
             error: true,
             message: `This is already a ${urlParsed.host} shortened url.`,

@@ -6,6 +6,7 @@ import React from 'react';
 const urlencode = require("urlencode");
 const validUrl = require('url-validation');
 const parse = require("url-parse")
+const shortenerProviders = require('../components/shortenerproviders');
 
 export default class Short extends React.Component {
     
@@ -20,16 +21,6 @@ export default class Short extends React.Component {
         }
     }
 
-    notAllowedHosts = [
-        'low.red',
-        'bit.ly',
-        'goo.gl',
-        'g.co',
-        't.co',
-        'a.co',
-        this.props.hostname
-    ]
-
     shortUrl(e) {
         e?.preventDefault();
 
@@ -37,7 +28,7 @@ export default class Short extends React.Component {
 
         this.setState({loading: false, shortData: {}})
         
-        if (validUrl(this.state.url) && !this.notAllowedHosts.includes(urlParsed.host)) {
+        if (validUrl(this.state.url) && !shortenerProviders.includes(urlParsed.host)) {
             this.setState({loading: true})
             const newUrl = urlencode(this.state.url);
     
@@ -47,7 +38,7 @@ export default class Short extends React.Component {
                     shortData: json,
                     loading: false
                 }));
-        } else if (this.notAllowedHosts.includes(urlParsed.host)) {
+        } else if (shortenerProviders.includes(urlParsed.host)) {
             this.setState({shortData: {
                 error: true,
                 message: <>This is already a <b>{urlParsed.host}</b> shortened url.</>,
