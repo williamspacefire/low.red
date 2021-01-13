@@ -5,5 +5,9 @@ module.exports = [
     'g.co',
     't.co',
     'a.co',
-    'amzn.to'
+    'amzn.to',
+    'daddy.ws',
+    'agm.mobi',
+    'rb.gy',
+    'tinyurl.com'
 ]

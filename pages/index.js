@@ -4,19 +4,18 @@ import Header from '../components/header.js';
 import Short from "../components/short.js";
 import Copyright from '../components/copyright';
 
+const urlParse = require("url-parse");
+
 function getHostname() {
     if (process.browser) {
-        if (window.location.port !== ""){
-            return window.location.protocol+"//"+window.location.hostname+":"+window.location.port+"/";
-        } else {
-            return window.location.protocol+"//"+window.location.hostname+"/";
-        }
+        const parsedUrl = urlParse(window.location.hostname, true);
+        return parsedUrl.protocol+"//"+parsedUrl.host+"/";
     }
 }
 
 export default function index() {
 
-    const hostname = getHostname()
+    const hostname = getHostname();
 
     return (
         <>
