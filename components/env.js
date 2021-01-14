@@ -1,7 +1,7 @@
-const dotenv = require('dotenv');
-dotenv.config({
-    path: "../.env"
-});
+//const dotenv = require('dotenv');
+//dotenv.config({
+//    path: "../.env"
+//});
 
 module.exports = {
     host: process.env.DB_HOST,

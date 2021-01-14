@@ -1,4 +1,4 @@
-import { host, user, database, password, hosturl } from '../../../../components/env';
+import { host, user, database, password } from '../../../../components/env';
 
 const mysql = require('mysql');
 const base64 = require("base-64");
