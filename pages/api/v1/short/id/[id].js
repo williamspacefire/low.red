@@ -1,7 +1,6 @@
 import { host, user, database, password } from '../../../../../components/env';
 
 const mysql = require('mysql');
-
 const db = mysql.createConnection({
     host: host,
     user: user,
