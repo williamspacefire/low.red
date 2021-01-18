@@ -13,7 +13,9 @@ function short({ data }) {
     )
 }
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, res }) {
+
+    res.setHeader('Cache-Control', 's-maxage=15778800, stale-while-revalidate')
     
     const api = await fetch(`${hosturl}/api/v1/short/id/${params.id}`);
     const data = await api.json();

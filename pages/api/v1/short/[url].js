@@ -22,6 +22,7 @@ export default function handler(req, res) {
 
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
+    res.setHeader('Cache-Control', 's-maxage=15778800, stale-while-revalidate')
     
     if (validUrl(newUrl) && !shortenerProviders.includes(urlParsed.host)) {
         db.query(`SELECT * FROM urls WHERE url = '${url}' LIMIT 1`, (error, results, fields) => {

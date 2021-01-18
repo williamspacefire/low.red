@@ -14,6 +14,7 @@ export default function handler(req, res) {
 
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
+    res.setHeader('Cache-Control', 's-maxage=15778800, stale-while-revalidate')
     
     db.query(`SELECT * FROM urls WHERE short = '${id}' LIMIT 1`, (error, results, fields) => {
         
