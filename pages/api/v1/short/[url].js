@@ -1,3 +1,4 @@
+import { age_if_url_found, age_if_url_not_found } from '../../../../components/constants';
 import { host, user, database, password } from '../../../../components/env';
 
 const mysql = require('mysql');
@@ -22,9 +23,11 @@ export default function handler(req, res) {
 
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
-    res.setHeader('Cache-Control', 's-maxage=15778800, stale-while-revalidate')
     
     if (validUrl(newUrl) && !shortenerProviders.includes(urlParsed.host)) {
+
+        res.setHeader(`Cache-Control', 's-maxage=${age_if_url_found}, stale-while-revalidate`)
+
         db.query(`SELECT * FROM urls WHERE url = '${url}' LIMIT 1`, (error, results, fields) => {
             if (results.length > 0) {
                 res.end(JSON.stringify({
@@ -56,12 +59,14 @@ export default function handler(req, res) {
             }
         })
     } else if (shortenerProviders.includes(urlParsed.host)) {
+        res.setHeader(`Cache-Control', 's-maxage=${age_if_url_found}, stale-while-revalidate`)
         res.end(JSON.stringify({
             error: true,
             message: `This is already a ${urlParsed.host} shortened url.`,
             code: 346
         }))
     } else {
+        res.setHeader(`Cache-Control', 's-maxage=${age_if_url_not_found}, stale-while-revalidate`)
         res.end(JSON.stringify({
             error: true,
             message: "Invalid url, please try again with a valid url.",
