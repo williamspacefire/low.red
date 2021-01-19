@@ -1,4 +1,3 @@
-import { age_if_url_not_found } from '../../../../../components/constants';
 import { host, user, database, password } from '../../../../../components/env';
 
 const mysql = require('mysql');
@@ -22,10 +21,8 @@ export default function handler(req, res) {
         if (error) throw error;
         
         if (results[0] && results[0]?.short === id) {
-            res.setHeader(`Cache-Control', 's-maxage=${age_if_url_found}, stale-while-revalidate`)
             res.end(JSON.stringify(results[0]))
         } else {
-            res.setHeader(`Cache-Control', 's-maxage=${age_if_url_not_found}, stale-while-revalidate`)
             res.end(JSON.stringify({
                 error: true,
                 message: "ID not found in the database",
