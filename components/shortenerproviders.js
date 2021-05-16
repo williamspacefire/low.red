@@ -9,5 +9,5 @@ module.exports = [
     'daddy.ws',
     'agm.mobi',
     'rb.gy',
-    'tinyurl.com'
+    'tinyurl.com',
 ]
